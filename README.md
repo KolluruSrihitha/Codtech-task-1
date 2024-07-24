@@ -1,28 +1,42 @@
-Purpose:
-The code creates a simple quiz game that presents multiple-choice questions to the user, keeps track of the score, and provides feedback.
-
-Breakdown:
-
-Includes and Constants
-#include <stdio.h>: Includes the standard input/output library for functions like printf and scanf.
-#include <string.h>: Includes the string manipulation library for handling strings.
-#define MAX_QUESTIONS 5: Defines a constant for the maximum number of questions.
-#define MAX_OPTIONS 4: Defines a constant for the maximum number of options per question.
+Purpose
+The provided C code implements a simple quiz game. It presents multiple-choice questions, tracks the user's score, and provides feedback.
+Breakdown
+Header Files
+stdio.h: Includes standard input/output functions like printf and scanf.
+stdlib.h: Includes standard library functions, not used explicitly in this code.
+string.h: Includes string manipulation functions, not used explicitly in this code.
+Constants
+MAX_QUESTIONS: Defines the maximum number of questions in the quiz.
+MAX_OPTIONS: Defines the maximum number of options for each question.
+MAX_OPTION_LENGTH: Defines the maximum length of an option string.
 Structure
-typedef struct { ... } Question;: Defines a structure named Question to store information about a question, including its text, options, and the correct answer index.
 Functions
-print_question(Question q): Takes a Question structure as input and prints the question and its options to the console.
-get_user_answer(): Prompts the user to enter their answer as a number (1-4) and returns the chosen option.
-main():
-Creates an array of Question structures to store the quiz questions.
+print_question: Displays a question and its options to the user.
+get_user_input: Prompts the user to enter their choice and validates the input.
+evaluate_answer: Checks if the user's answer is correct and provides feedback.
+Main Function
+Declares arrays to store questions, options, and correct answers.
 Initializes a score variable to keep track of correct answers.
+Iterates through the questions, calling print_question, get_user_input, and evaluate_answer for each question.
+Calculates and displays the final score.
+Detailed Explanation
+print_question
+Takes a Question structure as input.
+Prints the question to the console.
+Iterates through the options, printing each option with its corresponding number.
+get_user_input
+Prompts the user to enter their choice.
+Uses scanf to read the user's input as an integer.
+Validates the input to ensure it's within the allowed range (1 to MAX_OPTIONS).
+Returns the user's choice as an integer.
+evaluate_answer
+Compares the user's choice with the correct answer.
+Prints "Correct!" if the answer is correct, otherwise prints the correct answer.
+Main Function
+Initializes arrays with questions, options, and correct answers.
 Iterates through each question:
-Prints the question using print_question.
-Gets the user's answer using get_user_answer.
-Checks if the user's answer is correct and provides feedback.
-Updates the score if the answer is correct.
+Prints the current question using print_question.
+Gets the user's answer using get_user_input.
+Checks if the answer is correct using evaluate_answer.
+Increments the score if the answer is correct.
 Prints the final score.
-Key Points
-The code uses a struct to organize question data efficiently.
-Functions are used to modularize the code and improve readability.
-The code could be enhanced with error handling, randomization, and more complex question formats.
