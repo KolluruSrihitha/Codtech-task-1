@@ -1,51 +1,91 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#define MAX_QUESTIONS 5
+// Define constants
+#define MAX_QUESTIONS 6
 #define MAX_OPTIONS 4
+#define MAX_OPTION_LENGTH 50
 
-typedef struct {
-    char question[100];
-    char options[MAX_OPTIONS][50];
-    int correct_answer;
-} Question;
-
-void print_question(Question q) {
-    printf("%s\n", q.question);
-    for (int i = 0; i < MAX_OPTIONS; i++) {
-        printf("%d. %s\n", i + 1, q.options[i]);
-    }
-}
-
-int get_user_answer() {
-    int choice;
-    printf("Enter your choice (1-%d): ", MAX_OPTIONS);
-    scanf("%d", &choice);
-    return choice;
-}
+// Function prototypes
+void print_question(char *question, char options[MAX_OPTIONS][MAX_OPTION_LENGTH], int num_options);
+int get_user_input();
+void evaluate_answer(int user_choice, int correct_index, char options[MAX_OPTIONS][MAX_OPTION_LENGTH], int num_options);
 
 int main() {
-    Question questions[MAX_QUESTIONS] = {
-        {"What is the capital of France?", {"Paris", "London", "Berlin", "Madrid"}, 0},
-        {"Which planet is closest to the Sun?", {"Mars", "Venus", "Mercury", "Earth"}, 2},
-        // Add more questions here
+    // Array of questions, options, and correct answers
+    char questions[MAX_QUESTIONS][100] = {
+        "What is the capital of Japan?",
+        "Who painted the Mona Lisa?",
+        "Which planet is the largest in our solar system?",
+        "What is the chemical symbol for the element Gold?",
+        "Who wrote the play 'Hamlet'?",
+        "What is the longest river in the world?"
     };
-
+    
+    char options[MAX_QUESTIONS][MAX_OPTIONS][MAX_OPTION_LENGTH] = {
+        {"Tokyo", "Beijing", "Seoul", "Bangkok"},
+        {"Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"},
+        {"Venus", "Mars", "Jupiter", "Saturn"},
+        {"Au", "Ag", "Fe", "Hg"},
+        {"William Shakespeare", "George Bernard Shaw", "Tennessee Williams", "Oscar Wilde"},
+        {"Nile", "Amazon", "Mississippi", "Yangtze"}
+    };
+    
+    int correct_answers[MAX_QUESTIONS] = {0, 1, 2, 0, 0, 0}; // Indices of correct answers
+    
     int score = 0;
-
+    
+    // Welcome message
+    printf("Welcome to the Quiz Game!\n\n");
+    
+    // Quiz loop
     for (int i = 0; i < MAX_QUESTIONS; i++) {
-        print_question(questions[i]);
-        int user_answer = get_user_answer();
-        if (user_answer - 1 == questions[i].correct_answer) {
-            printf("Correct!\n");
+        print_question(questions[i], options[i], MAX_OPTIONS);
+        int user_choice = get_user_input();
+        evaluate_answer(user_choice, correct_answers[i], options[i], MAX_OPTIONS);
+        if (user_choice == correct_answers[i]) {
             score++;
-        } else {
-            printf("Incorrect. The correct answer is %d: %s\n", questions[i].correct_answer + 1, questions[i].options[questions[i].correct_answer]);
         }
     }
-
-    printf("\nYour score is: %d/%d\n", score, MAX_QUESTIONS);
-
+    
+    // Display final score
+    printf("\nQuiz ended! Your final score is %d/%d.\n", score, MAX_QUESTIONS);
+    
     return 0;
 }
+
+// Function to print a question and its options
+void print_question(char *question, char options[MAX_OPTIONS][MAX_OPTION_LENGTH], int num_options) {
+    printf("%s\n", question);
+    for (int i = 0; i < num_options; i++) {
+        printf("%d. %s\n", i + 1, options[i]);
+    }
+    printf("\n");
+}
+
+// Function to get user input and validate it
+int get_user_input() {
+    int choice;
+    while (1) {
+        printf("Enter your choice (1-%d): ", MAX_OPTIONS);
+        if (scanf("%d", &choice) != 1  choice < 1  choice > MAX_OPTIONS) {
+            while (getchar() != '\n'); // Clear input buffer
+            printf("Invalid input. Please enter a number between 1 and %d.\n", MAX_OPTIONS);
+        } else {
+            break;
+        }
+    }
+    return choice - 1; // Return index (0-based)
+}
+
+// Function to evaluate the user's answer
+void evaluate_answer(int user_choice, int correct_index, char options[MAX_OPTIONS][MAX_OPTION_LENGTH], int num_options) {
+    if (user_choice == correct_index) {
+        printf("Correct!\n\n");
+    } else {
+        printf("Sorry, incorrect. The correct answer is: %s\n\n", options[correct_index]);
+    }
+}
+
 
